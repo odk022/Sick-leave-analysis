@@ -1,4 +1,3 @@
-#Fullt datasett
 
 library(tidyverse)
 library(PxWebApiData)
@@ -78,11 +77,27 @@ glimpse(oversikt_legemeldt)
 
 sf_linje_legemeldt<- 
   ggplot(oversikt_legemeldt,aes(x=år,y=sykefraværsprosent, group=kjønn))+
-  geom_line(aes(color= kjønn), size = 1.0)+
+  geom_line(aes(color= kjønn), linewidth = 1.0)+
   geom_point() +
   ylim(0, 10)+
   labs(title = "Figur 4: Legemeldt sykefravær fordelt på kjønn", 
        x = "År", y = "Sykefraværsprosent")
 sf_linje_legemeldt
+
+
+#bransjeoversikt
+bransjer_år<- data_sf_full %>% 
+  filter(sykefraværstyper == "Legemeldt") %>%
+  pivot_wider(names_from = år, values_from = sykefraværsprosent)
+
+#bransjer, alle  - fraværstype = Legemeldt
+bransjer_alle<- bransjer_år %>% 
+  select(-"sykefraværstyper") %>% 
+  filter(kjønn == "Begge kjønn")
+  
+
+# bransjer, kvinner
+bransje
+
 
 

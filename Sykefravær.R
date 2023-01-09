@@ -11,9 +11,15 @@ data_sf<- tabell[[1]]
 glimpse(data_sf)
 names(data_sf)
 
-# data_sf %>% 
-#   group_by(kjønn) %>% 
-#   summarise(value, år)
+test<-data_sf %>% 
+  rename("næringer" = "næring (SN2007)", 
+         "sykefraværstyper" = 'type sykefravær',
+         "sykefraværsprosent" = "value") %>% 
+  select(-"statistikkvariabel") %>% 
+  filter(kjønn == "Kvinner") 
+  
+
+
 
 # kolonner 
 sf_kolonne_pl<- 

@@ -1,8 +1,18 @@
 ---
 title: "Sick-leave analysis"
 author: "Oddmund Klæboe"
-date: "2023-01-06"
-output: pdf_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  pdf_document:
+    fig_width: 4
+    fig_height: 4
+    fig_caption: true
+    toc: true
+    toc_depth: 3
+#bibliography: bibliography.bib
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE, warning = FALSE}
@@ -37,14 +47,16 @@ data_sf_full<- data_sf_full %>%
 #glimpse(data_sf_full)
 #names(data_sf_full)
 ```
-## **1. Innledning**
-Litt om sykefravær  
 
-## **2. Gjennomgang av tilgjengelig statistikk**  
+\newpage
+
+## **1. Innledning**
+
+Litt om sykefravær
+
+## **2. Gjennomgang av tilgjengelig statistikk**
 
 ### **2.1 Alle typer sykefravær, alle næringer, begge kjønn**
-
-
 
 ```{r oversikt alle, fig.width= 12}
 
@@ -63,7 +75,8 @@ sf_linje_alle
 
 ```
 
-### **2.2 Kvinner, alle typer sykefravær, alle næringer **
+### **2.2 Kvinner, alle typer sykefravær, alle næringer**
+
 ```{r oversikt kvinner, fig.width= 12}
 
 oversikt_kv<-data_sf_full %>% 
@@ -80,8 +93,8 @@ sf_linje_kvinner<-
 sf_linje_kvinner
 ```
 
+### **2.3 Menn, alle typer sykefravær, alle næringer**
 
-### **2.3 Menn, alle typer sykefravær, alle næringer **
 ```{r oversikt menn, fig.width= 12}
 oversikt_m<-data_sf_full %>% 
   filter(kjønn == "Menn", 
@@ -97,7 +110,8 @@ sf_linje_menn<-
 sf_linje_menn
 ```
 
-### **2.4 Legemeldt fravær fordelt på kjønn **
+### **2.4 Legemeldt fravær fordelt på kjønn**
+
 ```{r legemeldt, fig.width= 12}
 
 oversikt_legemeldt<-data_sf_full %>% 
@@ -115,8 +129,83 @@ sf_linje_legemeldt<-
 sf_linje_legemeldt
 ```
 
-finne ut av figurene
-lage bransjeoversikt
+### **2.5 Legemeldt fravær fordelt på bransjer og kjønn**
 
+```{r legemeldt_bransjer, fig.width= 12}
 
+oversikt_legemeldt<-data_sf_full %>% 
+  filter(næringer == "Helse- og sosialtjenester", sykefraværstyper == "Legemeldt")
 
+#glimpse(oversikt_legemeldt)
+
+sf_legemeldt_HS<- 
+  ggplot(oversikt_legemeldt,aes(x=år,y=sykefraværsprosent, group=kjønn))+
+  geom_line(aes(color= kjønn), linewidth = 1.0)+
+  geom_point() +
+  ylim(0, 10)+
+  labs(title = "Figur 5: Helse- og sosialtjenester \nLegemeldt sykefravær fordelt på kjønn", 
+       x = "År", y = "Sykefraværsprosent")
+sf_legemeldt_HS
+```
+
+```{r}
+#bransjeoversikt
+bransjer_år<- data_sf_full %>% 
+  filter(sykefraværstyper == "Legemeldt") %>%
+  pivot_wider(names_from = år, values_from = sykefraværsprosent)
+#bransjer_år
+```
+
+```{r alle}
+#bransjer, alle  - fraværstype = Legemeldt
+bransjer_alle<- bransjer_år %>% 
+  select(-"sykefraværstyper") %>% 
+  filter(kjønn == "Begge kjønn")
+
+```
+
+```{r tabell_1, warning = FALSE}
+# tabell med tall - ti siste årene
+suppressPackageStartupMessages(library(kableExtra))
+tabell_bransjer_alle <- 
+  bransjer_alle %>% 
+  select(-c("2001":"2011"), - "kjønn") 
+
+knitr::kable(tabell_bransjer_alle, caption = "Sykefravær totalt fordelt på næringer") 
+```
+
+```{r kvinner}
+#bransjer, kvinner  - fraværstype = Legemeldt
+bransjer_kvinner<- bransjer_år %>% 
+  select(-"sykefraværstyper") %>% 
+  filter(kjønn == "Kvinner")
+
+```
+
+```{r tabell_2, warning = FALSE}
+# tabell med tall - ti siste årene
+
+tabell_bransjer_kvinner <- 
+  bransjer_kvinner %>% 
+  select(-c("2001":"2011"), - "kjønn") 
+
+knitr::kable(tabell_bransjer_kvinner, caption = "Sykefravær kvinner fordelt på næringer") 
+```
+
+```{r menn}
+#bransjer, menn  - fraværstype = Legemeldt
+bransjer_menn<- bransjer_år %>% 
+  select(-"sykefraværstyper") %>% 
+  filter(kjønn == "Menn")
+
+```
+
+```{r tabell_3, warning = FALSE}
+# tabell med tall - ti siste årene
+
+tabell_bransjer_menn <- 
+  bransjer_menn %>% 
+  select(-c("2001":"2011"), - "kjønn") 
+
+knitr::kable(tabell_bransjer_menn, caption = "Sykefravær menn fordelt på næringer") 
+```
