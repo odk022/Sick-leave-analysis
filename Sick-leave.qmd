@@ -33,8 +33,6 @@ library(broom)      # for model summary
 knitr::opts_chunk$set(fig.pos = "H") # holder figurene på rett plass
 ```
 
-
-
 ```{r data}
 tabell_full<-ApiData("https://data.ssb.no/api/v0/no/table/12441/", 
         Kjonn=list('item', c("0", "1", "2")), 
@@ -61,7 +59,6 @@ data_sf_full<- data_sf_full %>%
 Litt om sykefravær
 
 Alle tall er hentet fra statistikkbanken i Statistisk sentralbyrå [@noauthor_12441_nodate]
-
 
 ## Gjennomgang av tilgjengelig statistikk
 
@@ -96,9 +93,8 @@ sf_linje_alle
 
 ```
 
-@fig-oversikt viser at det egenmeldte fraværet er konstant over tid, og at det totale fraværet har variert over tid. Det egenmeldte fraværet er sett vekk fra i det følgende.  
+@fig-oversikt viser at det egenmeldte fraværet er konstant over tid, og at det totale fraværet har variert over tid. Det egenmeldte fraværet er sett vekk fra i det følgende.\
 <br>
-
 
 ### Kvinner, alle typer sykefravær, alle næringer
 
@@ -251,8 +247,9 @@ bransjer_år<- data_sf_full %>%
   pivot_wider(names_from = år, values_from = sykefraværsprosent)
 
 ```
-  
+
 <br><br><br>
+
 ```{r}
 #| label: bransjer, alle, Legemeldt
 bransjer_alle<- bransjer_år %>% 
@@ -274,8 +271,9 @@ tabell_bransjer_alle <-
 kable(tabell_bransjer_alle) 
 ```
 
-@tbl-bransjer viser fraværsutviklingen totalt for legemeldt fravær de siste ti årene fordelt på næringer.  
+@tbl-bransjer viser fraværsutviklingen totalt for legemeldt fravær de siste ti årene fordelt på næringer.\
 <br><br><br><br><br><br>
+
 ```{r}
 #| label: kvinner
 #bransjer, kvinner  - fraværstype = Legemeldt
@@ -325,6 +323,7 @@ kable(tabell_bransjer_menn)
 @tbl-bransjer_menn viser fraværsutviklingen for legemeldt fravær for kvinner de siste ti årene fordelt på næringer.
 
 ## Troms og Finnmark
+
 ```{r fylkesdata}
 fylker<-ApiData("https://data.ssb.no/api/v0/no/table/13934/", 
     Region=list('item', c("0", "03", "34", "42", "11", "46", "15", "50", "18", "54")), 
@@ -335,13 +334,13 @@ Tid=list('item', c("2020K1", "2020K2", "2020K3", "2020K4", "2021K1", "2021K2", "
 fylker_data<- fylker[[1]]
 #glimpse(fylker_data)
 ```
+
 ```{r rydder i data}
 # Rydder i datasettet
 fylker_data<- fylker_data %>% 
   rename("sykefraværsprosent" = "value") %>% 
   select(-c("statistikkvariabel"))
 ```
-
 
 ```{r}
 #| label: Land og Troms og Finnmark
@@ -373,7 +372,6 @@ geom_line(aes(color= region), linewidth = 1.0)+
 Troms_Finnmark
 ```
 
-
 ```{r TF kjønn}
 #| label: Troms og Finnmark kjønn
 #| fig-cap: Sykefravær I Troms og Finnmark fordelt på kjønn
@@ -403,6 +401,4 @@ geom_line(aes(color= kjønn), linewidth = 1.0)+
 Troms_Finnmark
 ```
 
-```{r}
-```{r data}
-## Referanser
+`{r}`{r data} \## Referanser
