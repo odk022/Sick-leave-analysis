@@ -2,16 +2,19 @@
 title: "Sick-leave analysis"
 author: "Oddmund Klæboe"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: 
+output:
   pdf_document:
     fig_width: 4
     fig_height: 4
-    fig_caption: true
-    toc: true
+    fig_caption: yes
+    toc: yes
     toc_depth: 3
-#bibliography: bibliography.bib
-editor_options: 
-  markdown: 
+  html_document:
+    toc: yes
+    toc_depth: '3'
+    df_print: paged
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -136,7 +139,7 @@ sf_linje_legemeldt
 oversikt_legemeldt<-data_sf_full %>% 
   filter(næringer == "Helse- og sosialtjenester", sykefraværstyper == "Legemeldt")
 
-#glimpse(oversikt_legemeldt)
+
 
 sf_legemeldt_HS<- 
   ggplot(oversikt_legemeldt,aes(x=år,y=sykefraværsprosent, group=kjønn))+
@@ -150,10 +153,10 @@ sf_legemeldt_HS
 
 ```{r}
 #bransjeoversikt
-bransjer_år<- data_sf_full %>% 
+brransjer_år<- data_sf_full %>% 
   filter(sykefraværstyper == "Legemeldt") %>%
   pivot_wider(names_from = år, values_from = sykefraværsprosent)
-#bransjer_år
+#bransjer_å
 ```
 
 ```{r alle}

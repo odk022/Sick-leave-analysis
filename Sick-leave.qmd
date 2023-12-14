@@ -401,4 +401,5 @@ geom_line(aes(color= kjønn), linewidth = 1.0)+
 Troms_Finnmark
 ```
 
+
 `{r}`{r data} \## Referanser
