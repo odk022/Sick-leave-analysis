@@ -8,6 +8,7 @@ execute:
   warning: false
   echo: false
 highlight-style: pygments
+bibliography: sick.bib
 format:
   html: 
     code-fold: true
@@ -16,7 +17,6 @@ format:
     geometry: 
       - top=30mm
       - left=30mm
-    documentclass: report
   docx: default
 ---
 
@@ -30,7 +30,10 @@ library(tidyverse)  # for data wrangling and visualization
 library(knitr)      # for tables
 library(broom)      # for model summary
 # Sys.setlocale(locale="no_NO")
+knitr::opts_chunk$set(fig.pos = "H") # holder figurene på rett plass
 ```
+
+
 
 ```{r data}
 tabell_full<-ApiData("https://data.ssb.no/api/v0/no/table/12441/", 
@@ -57,7 +60,8 @@ data_sf_full<- data_sf_full %>%
 
 Litt om sykefravær
 
-Alle tall er hentet fra statistikkbanken i Statistisk sentralbyrå.
+Alle tall er hentet fra statistikkbanken i Statistisk sentralbyrå [@noauthor_12441_nodate]
+
 
 ## Gjennomgang av tilgjengelig statistikk
 
@@ -92,12 +96,14 @@ sf_linje_alle
 
 ```
 
-Figuren viser at det egenmeldte fraværet er konstant over tid, og at det totale fraværet har variert over tid. Det egenmeldte fraværet er sett vekk fra i det følgende.
+@fig-oversikt viser at det egenmeldte fraværet er konstant over tid, og at det totale fraværet har variert over tid. Det egenmeldte fraværet er sett vekk fra i det følgende.  
+<br>
+
 
 ### Kvinner, alle typer sykefravær, alle næringer
 
 ```{r}
-#| label: oversikt_kvinner
+#| label: fig-oversikt_kvinner
 #| fig-cap: Sykefravær totalt blant kvinner fordelt på fraværstyper
 #| fig-width: 12
 #| fig-height: 6
@@ -133,12 +139,12 @@ sf_linje_kvinner<-
 sf_linje_kvinner
 ```
 
-Vi ser av figuren at det legemeldte sykefraværet for kvinner har økt de siste årene og var i 2021 på `r Year_2021_kv$sykefraværsprosent` $\%$. Gjennomsnittet for hele 20-årsperioden var `r round(mean(gjsn_kv$sykefraværsprosent),1)` $\%$.
+Vi ser av @fig-oversikt_kvinner at det legemeldte sykefraværet for kvinner har økt de siste årene og var i 2021 på `r Year_2021_kv$sykefraværsprosent` $\%$. Gjennomsnittet for hele 20-årsperioden var `r round(mean(gjsn_kv$sykefraværsprosent),1)` $\%$.
 
 ### Menn, alle typer sykefravær, alle næringer
 
 ```{r}
-#| label: oversikt_menn
+#| label: fig-oversikt_menn
 #| fig-cap: Sykefravær totalt blant menn fordelt på fraværstyper
 #| fig-width: 12
 #| fig-height: 6
@@ -174,12 +180,14 @@ sf_linje_menn
 
 ```
 
-Vi ser av figuren at det legemeldte sykefraværet for menn har hatt en nedgang i mange år, men økte fra 2019 til 2020. Sykefraværet var i 2021 på `r Year_2021_m$sykefraværsprosent` $\%$. Gjennomsnittet for hele 20-årsperioden var `r round(mean(gjsn_m$sykefraværsprosent),1)` $\%$.
+Vi ser av @fig-oversikt_menn at det legemeldte sykefraværet for menn har hatt en nedgang i mange år, men økte fra 2019 til 2020. Sykefraværet var i 2021 på `r Year_2021_m$sykefraværsprosent` $\%$. Gjennomsnittet for hele 20-årsperioden var `r round(mean(gjsn_m$sykefraværsprosent),1)` $\%$.\
+\
+\
 
 ### Legemeldt fravær fordelt på kjønn
 
 ```{r}
-#| label: oversikt_totalt_kjønn
+#| label: fig-oversikt_totalt_kjønn
 #| fig-cap: Legemeldt sykefravær fordelt på kjønn
 #| fig-width: 12
 #| fig-height: 6
@@ -205,11 +213,13 @@ sf_linje_legemeldt
 
 ```
 
-Figuren viser at det er stor forskjell i nivå på legemeldt sykefravær mellom kjønn. Det er derfor grunn til å spørre om det er ulike årsaker til fraværet mellom kjønnene som forårsaker denne forskjellen, og hvis det er slik, hvilke årsaker er det tale om.
+@fig-oversikt_totalt_kjønn viser at det er stor forskjell i nivå på legemeldt sykefravær mellom kjønn. Det er derfor grunn til å spørre om det er ulike årsaker til fraværet mellom kjønnene som forårsaker denne forskjellen, og hvis det er slik, hvilke årsaker er det tale om.\
+\
+\
 
 ### Legemeldt fravær fordelt på bransjer og kjønn
 
-```{r}
+```{r bransje detaljert}
 #| label: oversikt_bransjer
 #| fig-cap: Legemeldt sykefravær innen Helse-og sosialtjenester
 #| fig-width: 12
@@ -241,7 +251,8 @@ bransjer_år<- data_sf_full %>%
   pivot_wider(names_from = år, values_from = sykefraværsprosent)
 
 ```
-
+  
+<br><br><br>
 ```{r}
 #| label: bransjer, alle, Legemeldt
 bransjer_alle<- bransjer_år %>% 
@@ -263,8 +274,8 @@ tabell_bransjer_alle <-
 kable(tabell_bransjer_alle) 
 ```
 
-@tbl-bransjer viser fraværsutviklingen totalt for legemeldt fravær de siste ti årene fordelt på næringer.
-
+@tbl-bransjer viser fraværsutviklingen totalt for legemeldt fravær de siste ti årene fordelt på næringer.  
+<br><br><br><br><br><br>
 ```{r}
 #| label: kvinner
 #bransjer, kvinner  - fraværstype = Legemeldt
@@ -287,8 +298,8 @@ tabell_bransjer_kvinner <-
 kable(tabell_bransjer_kvinner) 
 ```
 
-@tbl-bransjer_kvinner viser fraværsutviklingen for legemeldt fravær for kvinner de siste ti årene fordelt på næringer.  
-  
+@tbl-bransjer_kvinner viser fraværsutviklingen for legemeldt fravær for kvinner de siste ti årene fordelt på næringer.
+
 ```{r}
 #| label: menn
 
@@ -310,6 +321,88 @@ tabell_bransjer_menn <-
 
 kable(tabell_bransjer_menn) 
 ```
-@tbl-bransjer_menn viser fraværsutviklingen for legemeldt fravær for kvinner de siste ti årene fordelt på næringer.  
 
+@tbl-bransjer_menn viser fraværsutviklingen for legemeldt fravær for kvinner de siste ti årene fordelt på næringer.
+
+## Troms og Finnmark
+```{r fylkesdata}
+fylker<-ApiData("https://data.ssb.no/api/v0/no/table/13934/", 
+    Region=list('item', c("0", "03", "34", "42", "11", "46", "15", "50", "18", "54")), 
+Kjonn=list('item', c("0","1","2")), 
+ContentsCode=list('item', c("SykefravProsent")), 
+Tid=list('item', c("2020K1", "2020K2", "2020K3", "2020K4", "2021K1", "2021K2", "2021K3", "2021K4", "2022K1", "2022K2", "2022K3", "2022K4", "2023K1", "2023K2", "2023K3")))
+
+fylker_data<- fylker[[1]]
+#glimpse(fylker_data)
+```
+```{r rydder i data}
+# Rydder i datasettet
+fylker_data<- fylker_data %>% 
+  rename("sykefraværsprosent" = "value") %>% 
+  select(-c("statistikkvariabel"))
+```
+
+
+```{r}
+#| label: Land og Troms og Finnmark
+#| fig-cap: Sykefravær totalt fordelt på fylker
+#| fig-width: 12
+#| fig-height: 6
+
+
+TogF<-fylker_data %>% 
+  filter(region %in% c("Troms og Finnmark - Romsa ja Finnmárku", "Hele landet"),
+(kjønn== "Begge kjønn")) 
+
+
+Troms_Finnmark<- 
+  ggplot(TogF,aes(x=kvartal,y=sykefraværsprosent, group=region))+
+geom_line(aes(color= region), linewidth = 1.0)+
+  #geom_point() +
+  ylim(0, 10)+
+  labs(title = "Sykefravær totalt", 
+       x = "Kvartal", y = "Sykefraværsprosent") +
+   theme(plot.title = element_text(size = 20, face = "bold")) +
+   theme(axis.text=element_text(size=11),
+        axis.title=element_text(size=11,face="bold")) + 
+  theme(legend.text=element_text(size=12),
+        legend.position = "bottom")#c(0,1), # top left position
+        # legend.justification = c(1, 0), # top left justification
+        # legend.box.margin = margin(5, l = 5, unit = "mm") # small margin
+        # )
+Troms_Finnmark
+```
+
+
+```{r TF kjønn}
+#| label: Troms og Finnmark kjønn
+#| fig-cap: Sykefravær I Troms og Finnmark fordelt på kjønn
+#| fig-width: 12
+#| fig-height: 6
+
+
+TogF_kj<-fylker_data %>% 
+  #filter(region %in% c("Troms og Finnmark - Romsa ja Finnmárku", "Hele landet")) 
+filter(region=="Troms og Finnmark - Romsa ja Finnmárku")
+
+Troms_Finnmark<- 
+  ggplot(TogF_kj,aes(x=kvartal,y=sykefraværsprosent, group=kjønn))+
+geom_line(aes(color= kjønn), linewidth = 1.0)+
+  #geom_point() +
+  ylim(0, 15)+
+  labs(title = "Sykefravær i Troms og Finnmark totalt og kjønn", 
+       x = "Kvartal", y = "Sykefraværsprosent") +
+   theme(plot.title = element_text(size = 18, face = "bold")) +
+   theme(axis.text=element_text(size=11),
+        axis.title=element_text(size=11,face="bold")) + 
+  theme(legend.text=element_text(size=12),
+        legend.position = "bottom")#c(0,1), # top left position
+        # legend.justification = c(1, 0), # top left justification
+        # legend.box.margin = margin(5, l = 5, unit = "mm") # small margin
+        # )
+Troms_Finnmark
+```
+
+```{r}
+```{r data}
 ## Referanser
