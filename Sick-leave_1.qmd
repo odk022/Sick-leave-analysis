@@ -452,7 +452,7 @@ geom_line(aes(color= kjønn), linewidth = 1.0)+
         # legend.box.margin = margin(5, l = 5, unit = "mm") # small margin
         # )
 Tromsø
-# lage små plott for hver kvartalsgruppe
+# lage plott for hver kvartalsgruppe
 ```
 
 ```{r}
